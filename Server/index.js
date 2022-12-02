@@ -11,6 +11,13 @@ import { fileURLToPath } from 'url';
 import {register} from './controllers/auth.js';
 import authRoutes from './routes/auth.js';
 import { verifyToken } from './middleware/auth.js';
+import userRoutes from './routes/user.js';
+import postRoutes from './routes/posts.js';
+import { createPost } from './controllers/posts.js';
+import user from "./models/User.js";
+import Post from "./models/posts.js";
+import {users, posts} from "./data/index.js";
+import User from './models/User.js';
 
 
 /*  Configurations */
@@ -42,6 +49,7 @@ const upload = multer({storage});
 
 //Routes with file 
 app.post('/auth/register', upload.single("picture"),verifyToken,register);
+app.post('/post', verifyToken, upload.single("picture"), createPost);
 
 app.get('/', (req, res) => {
     console.log("Connected , don't worry");
@@ -50,6 +58,8 @@ app.get('/', (req, res) => {
 
 // ROUTES 
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 // Connection Code for mongoDB
 const PORT = process.env.PORT  
@@ -59,5 +69,9 @@ mongoose.connect(process.env.MONGO_URL, {
 })
 .then(() => {
     app.listen(PORT, () => console.log(`Connected to server with port : ${PORT}`));
+
+    /*Add data One time */
+    User.insertMany(users);
+    Post.insertMany(posts);
 })
 .catch((error) => console.log(`${error} did not connect`));
