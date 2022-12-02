@@ -8,6 +8,9 @@ import helmet, { expectCt } from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {register} from './controllers/auth.js';
+import authRoutes from './routes/auth.js';
+import { verifyToken } from './middleware/auth.js';
 
 
 /*  Configurations */
@@ -35,7 +38,18 @@ const storage = multer.diskStorage({
         cb(null , file.originalname);
     }
 });
-const uplooad = multer({storage});
+const upload = multer({storage});
+
+//Routes with file 
+app.post('/auth/register', upload.single("picture"),verifyToken,register);
+
+app.get('/', (req, res) => {
+    console.log("Connected , don't worry");
+    return res.send("get connected");
+})
+
+// ROUTES 
+app.use("/auth", authRoutes);
 
 // Connection Code for mongoDB
 const PORT = process.env.PORT  
