@@ -15,7 +15,12 @@ function App() {
 
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = Boolean(useSelector((state) => state.token));
+
+  //This should be uncomment. 
+  //const isAuth = Boolean(useSelector((state) => state.token));
+
+  // this should be deleted
+  const isAuth = true;
   return (
     <div className="app">
 
