@@ -3,26 +3,34 @@ import User from "../models/User.js";
 
 
 export const createPost = async (req, res) => {
+
+    console.log("Create post api is called");
     try {
-        const {userId, description, picturePath} = res.body;
+        const {userId, description, picturePath} = req.body;
+        { userId, description, picturePath }
         const user = await User.findById(userId);
+        console.log("Find user");
+        
         const newPost = new Post({
             userId,
             firstName: user.firstName,
             lastName: user.lastName,
-            location : use.location,
+            location : user.location,
             description,
             userPicture : user.picturePath,
             picturePath,
             likes : {},
             comments: []
-
         })
 
         await newPost.save();
         const post = await Post.find() ;
+        
+        console.log("Successfuly creted a post");
         res.status(201).json(post)
     } catch(err) {
+
+        console.log("Sorry post is not created");
         res.status(409).json({message : err.message})
     }
 }

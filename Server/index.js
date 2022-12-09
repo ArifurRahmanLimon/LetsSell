@@ -49,7 +49,7 @@ const upload = multer({storage});
 
 //Routes with file 
 app.post('/auth/register', upload.single("picture"),register);
-app.post('/post', verifyToken, upload.single("picture"), createPost);
+app.post('/posts', verifyToken, upload.single("picture"), createPost);
 
 app.get('/', (req, res) => {
     console.log("Connected , don't worry");
