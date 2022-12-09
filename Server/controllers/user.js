@@ -5,9 +5,10 @@ export const getUser = async (req, res) => {
 
         const {id} = req.params;
         const user = await User.findById(id);
+        console.log("UserID is found");
         res.status(200).json(user);
-
     } catch (err){
+        console.log("Userid is not found");
         res.status(404).json({message : err.message});
     }
 }

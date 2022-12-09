@@ -21,17 +21,17 @@ import User from './models/User.js';
 
 
 /*  Configurations */
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
-// app.use(helmet());
-// app.use(helmet.crossOriginResourcePolicy({ policy : "cross-origin"}));
-// app.use(morgan("common"));
-// app.use(bodyParser.json({  limit : "30mb", extended : true}));
-// app.use(cors());
-// app.use("/asset", express.static(path.join(__dirname, 'public/assets')));
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy : "cross-origin"}));
+app.use(morgan("common"));
+app.use(bodyParser.json({  limit : "30mb", extended : true}));
+app.use(cors());
+app.use("/asset", express.static(path.join(__dirname, 'public/assets')));
 
 
 
@@ -48,12 +48,12 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 //Routes with file 
-app.post('/auth/register', upload.single("picture"),verifyToken,register);
+app.post('/auth/register', upload.single("picture"),register);
 app.post('/post', verifyToken, upload.single("picture"), createPost);
 
 app.get('/', (req, res) => {
     console.log("Connected , don't worry");
-    return res.send("get connected");
+    return res.send("Papon");
 })
 
 // ROUTES 
@@ -71,7 +71,7 @@ mongoose.connect(process.env.MONGO_URL, {
     app.listen(PORT, () => console.log(`Connected to server with port : ${PORT}`));
 
     /*Add data One time */
-    User.insertMany(users);
-    Post.insertMany(posts);
+    //User.insertMany(users);
+    //Post.insertMany(posts);
 })
 .catch((error) => console.log(`${error} did not connect`));

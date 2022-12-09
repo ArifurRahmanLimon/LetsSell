@@ -4,17 +4,15 @@ import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 const HomePage = () => {
 
+    console.log("Home page is called");
     const isNonMobileSreens = useMediaQuery("(min-width : 1000px)");
-    // const { _id, picturePath } = useSelector((state) => state.user);
-    const picturePath  = "p11.jpeg";
-    const _id = '1';
+    const { _id, picturePath } = useSelector((state) => state.user);
 
     console.log(`Limon userId : ${_id}`);
 
     return(
        <Box>
         <Navbar/>
-
         <Box 
         width = "100%"
         padding = "2rem 6%"

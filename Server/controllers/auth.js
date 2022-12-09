@@ -7,7 +7,7 @@ import User from "../models/User.js";
 
 export const register = async (req, res) => {
 
-    console.log("register file is called");
+    console.log("register function is called");
 
     try {
         const {
@@ -39,10 +39,12 @@ export const register = async (req, res) => {
         });
 
         const savedUser = await newUser.save();
+        console.log("ok registered");
         res.status(201).json(savedUser);
     }
     catch(err) {
         res.status(500).json({error : err.message});
+        console.log("Sorry not registered");
     }
 }
 
@@ -55,13 +57,20 @@ export const login = async (req, res) => {
         const user = await User.findOne({email : email});
         if(!user) return res.status(400).json({msg : "User does not match"});
 
+        console.log("User is find by login");
+
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch) res.status(400).json({msg : "Invalid password"});
 
+        console.log("Login password is matched");
+
         const token = jwt.sign({id : user.id}, process.env.JWT_SECRET);
         delete user.password;
+
+        console.log("Successfully loged");
         res.status(200).json({token, user});
     } catch(err) {
+        console.log("Error occured when user tried to logged");
         res.status(500).json({error : err.message});
     }
 }
